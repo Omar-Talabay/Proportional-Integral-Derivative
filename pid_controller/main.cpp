@@ -239,8 +239,8 @@ int main ()
   PID pid_throttle = PID();
 
   //Init(double Kpi, double Kii, double Kdi, double output_lim_maxi, double output_lim_mini)
-  pid_steer.Init(.35, .001, .71, 1.2, -1.2);
-  pid_throttle.Init(.2, .001, .015, 1., -1.);
+  pid_steer.Init(.3, .0012, .7, 1.2, -1.2);
+  pid_throttle.Init(.21, .001, .02, 1., -1.);
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
         auto s = hasData(data);
@@ -316,11 +316,12 @@ int main ()
          // The error is the angle difference between the actual steer and the desired steer to reach the planned position
          // desired steer: angle between 2 points
          
-         double x_point = accumulate(x_points.begin(), x_points.end(), 0) / x_points.size();
-         double y_point = accumulate(y_points.begin(), y_points.end(), 0) / y_points.size();
+         double x_point = 0;//accumulate(x_points.begin(), x_points.end(), 0) / x_points.size();
+         double y_point = 0;//accumulate(y_points.begin(), y_points.end(), 0) / y_points.size();
 
          int idx = 0;
          double min_dist = 9990;
+         // find the closest way point to the vehicle
 
          for (int j = 0; j < x_points.size(); j++){
            double temp_dist = distance(x_position, y_position, x_points[j], y_points[j]);
@@ -329,19 +330,17 @@ int main ()
              idx = j;
            }
          }
-
+        // one step ahead can be used, but commented here
          //idx = min(idx + 1, (int)x_points.size()-1);
          x_point = x_points[idx];
          y_point = y_points[idx];
 
 
-
+        // it is the angle between the current position and the closest one.
          double desired_steer = angle_between_points(x_position, y_position, x_point, y_point);
-       
-        //desired_steer = check_rotation_boundary(desired_steer);
+        // the error in steer is the difference between the actual steer and the desired
          error_steer = yaw - desired_steer ;
 
-         //error_steer = check_rotation_boundary(error_steer);
 
     
 
@@ -384,7 +383,10 @@ int main ()
 
           // a reasonable guess for the desired speed is the average of different velocities calculated by
           // the path planner
-          double desired_speed = accumulate(v_points.begin(), v_points.end(), 0) / v_points.size();
+          //double desired_speed = accumulate(v_points.begin(), v_points.end(), 0) / v_points.size();
+          
+          // the desired speed is the speed to the closest point
+
           error_throttle = velocity - v_points[idx] ;
 
 
