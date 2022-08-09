@@ -1,7 +1,7 @@
 
 
 Answer the following questions:
-- Add the plots to your report and explain them (describe what you see)
+## Add the plots to your report and explain them (describe what you see)
 
 The steering error starts small until the first vehicle is reaced. Then the ego vehicle turns left and then the steering error starts increasing.
 The steering output starts smooth. After the first turn, it starts zigzagging between -.5 and .5
@@ -13,7 +13,7 @@ The throttle output is mostly fixed along the trip.
 <img src='./figures/Figure_1_throttle.png' />
 
 
-- What is the effect of the PID according to the plots, how each part of the PID affects the control command?
+## What is the effect of the PID according to the plots, how each part of the PID affects the control command?
 
 P stands for proportional. High value makes the ego spin around. The right value makes the ego over shoot the path and not following it.
 
@@ -25,7 +25,7 @@ D stands for derivable. looks for the CTE rate. Low value keeps the ego vehicle 
 
 Manual parameter selection takes a very long time. For this reason, I would use twiddle algorithm. It is basically an iterative process in which adjusting these parameters is done. The process will terminate when a certain tolerance threshold is met.
 
-- PID controller is a model free controller, i.e. it does not use a model of the car. Could you explain the pros and cons of this type of controller?
+## PID controller is a model free controller, i.e. it does not use a model of the car. Could you explain the pros and cons of this type of controller?
 
 Pros:
 
@@ -39,7 +39,7 @@ cons:
 2- long time parameter tuning.
 3- for comlex systems, model based becomes more easier to implement.
 
-- (Optional) What would you do to improve the PID controller?
+## (Optional) What would you do to improve the PID controller?
 
 
 ### Tips:
